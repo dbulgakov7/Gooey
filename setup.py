@@ -1,32 +1,74 @@
-import os 
+"""Script for setuptools."""
+import sys
 from setuptools import setup, find_packages
 
 
 with open('README.md') as readme:
-  long_description = readme.read()
+    long_description = readme.read()
 
-local_path = os.path.join(os.path.dirname(__file__), 'gooey') 
+version = '1.0.8'
 
-imagepath = os.path.join(local_path, 'images')
-langpath  = os.path.join(local_path, 'languages')
+deps = [
+    'Pillow>=4.3.0',
+    'psutil>=5.4.2',
+    'colored>=1.3.93',
+    'pygtrie>=2.3.3'
+]
 
-images = [os.path.join(imagepath, image) for image in os.listdir(imagepath)]
+if sys.version[0] == '3':
+    deps.append('wxpython==4.1.0')
 
-languages = [os.path.join(langpath, lang)
-            for lang in os.listdir(langpath)
-            if '.py' not in lang]
 
 setup(
     name='Gooey',
-    version='0.1.0',
+    version=version,
+    url='http://pypi.python.org/pypi/Gooey/',
     author='Chris Kiehl',
     author_email='audionautic@gmail.com',
-    package_data={
-      '': ['*.txt', '*.png', '*.jpg', '*.json']
-    },
+    description=('Turn (almost) any command line program into a full GUI '
+                 'application with one line'),
+    license='MIT',
     packages=find_packages(),
-    url='http://pypi.python.org/pypi/Gooey/',
-    license='LICENSE.txt',
-    description='Turn (almost) any command line program into a full GUI application with one line',
-    long_description=long_description
+    install_requires=deps,
+    include_package_data=True,
+    dependency_links = ["http://www.wxpython.org/download.php"],
+    classifiers = [
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: Developers',
+        'Topic :: Desktop Environment',
+        'Topic :: Software Development :: Build Tools',
+        'Topic :: Software Development :: Widget Sets',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'License :: OSI Approved :: MIT License'
+    ],
+    long_description='''
+
+Gooey (Beta)
+############
+
+
+Turn (almost) any Python Console Program into a GUI application with one line
+-----------------------------------------------------------------------------
+
+.. image:: https://cloud.githubusercontent.com/assets/1408720/7904381/f54f97f6-07c5-11e5-9bcb-c3c102920769.png
+
+
+Quick Start
+-----------
+
+Gooey is attached to your code via a simple decorator on your `main` method.
+
+.. code-block::
+
+  from gooey import Gooey
+  @Gooey      <--- all it takes! :)
+  def main():
+      # rest of code
+
+
+
+With the decorator attached, run your program and the GUI will now appear!
+
+Checkout the full documentation, instructions, and source on `Github <https://github.com/chriskiehl/Gooey>`_'''
 )
